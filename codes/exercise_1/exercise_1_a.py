@@ -82,7 +82,6 @@ def main():
     input_capture.release()
 
     resize_frame_list = resize_frames(frame_list)
-    # print('resize_frame_list: ', resize_frame_list)
 
     generate_result(resize_frame_list)
 
