@@ -13,12 +13,17 @@ import numpy as np
 # Constants
 VIDEO_SOURCE_NAME = 'ebu7240_hand.mp4'
 VIDEO_SOURCE_PATH = '../../inputs/' + VIDEO_SOURCE_NAME
-RESULT_NAME = 'ex1_a_hand_rgbtest'
-RESULT_PATH = '../../results/' + RESULT_NAME
+RESULT_A_NAME = 'ex1_a_hand_rgbtest'
+RESULT_B_NAME = 'ex1_b_hand_composition'
+RESULT_PATH = '../../results/'
+MY_NAME_PATH = '../../inputs/my_name.png'
 
 
-def generate_file_path(file_id):
-    return '../../results/' + 'ex1_a_hand_frames' + str(file_id) + '.png'
+def generate_file_path(file_id, ex_name='A'):
+    if ex_name == 'A':
+        return '../../results/' + 'ex1_a_hand_frames' + str(file_id) + '.png'
+    else:
+        return '../../results/' + 'ex1_b_hand_frames' + str(file_id) + '.png'
 
 
 def get_video_info(video_source: cv.VideoCapture):
@@ -61,8 +66,11 @@ def resize_frames(img_list: []):
     return result
 
 
-def generate_result(img_list, extra_name=''):
-    save_path = RESULT_PATH + extra_name + '.mp4'
+def generate_result(img_list, extra_name='', ex_name='A'):
+    if ex_name == 'A':
+        save_path = RESULT_PATH + RESULT_A_NAME + extra_name + '.mp4'
+    else:
+        save_path = RESULT_PATH + RESULT_B_NAME + extra_name + '.mp4'
     print('save video into path:', save_path)
     sample_img = img_list[0]
     img_info = sample_img.shape
@@ -77,9 +85,9 @@ def generate_result(img_list, extra_name=''):
     print('-----DONE-----')
 
 
-def get_specific_frame(img_list, start_num, target_frame):
-    print('The {} frame is in the path: {}'.format(target_frame, generate_file_path(target_frame)))
-    cv.imwrite(generate_file_path(target_frame), img_list[target_frame-start_num])
+def get_specific_frame(img_list, start_num, target_frame, ex_name='A'):
+    print('The {} frame is in the path: {}'.format(target_frame, generate_file_path(target_frame, ex_name)))
+    cv.imwrite(generate_file_path(target_frame, ex_name), img_list[target_frame - start_num])
 
 
 def separate_color_channels(img, no_value_channel_list=None):
@@ -113,6 +121,16 @@ def generate_part_video(img_list, start=0, duration=0, no_value_channel_list=Non
     return result_list
 
 
+def generate_video_with_img(img_list):
+    my_name_img = cv.imread(MY_NAME_PATH)
+    small_pic_size = (90, 180)
+    result = []
+    for epoch, pic in enumerate(img_list):
+        pic[270:270 + small_pic_size[0], epoch * 2:epoch * 2 + small_pic_size[1], :] = my_name_img
+        result.append(cv.cvtColor(pic, cv.COLOR_BGR2RGB))
+    return result
+
+
 def main():
     # Task 1
     input_capture = cv.VideoCapture(VIDEO_SOURCE_PATH)
@@ -142,6 +160,13 @@ def main():
     frame_71_to_90_res = generate_part_video(resize_frame_list, 71, 90, ['r', 'g'])
     generate_result(frame_71_to_90_res, '_frame_71_to_90')
     get_specific_frame(frame_71_to_90_res, 71, 90)
+
+    # exercise_1 b
+    # Task 1, 2
+    res = generate_video_with_img(resize_frame_list)
+    generate_result(res, ex_name='B')
+    for item in [1, 21, 31, 61, 90]:
+        get_specific_frame(res, 1, item, ex_name='B')
 
 
 if __name__ == '__main__':
