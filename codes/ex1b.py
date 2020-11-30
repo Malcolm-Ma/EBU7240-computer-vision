@@ -10,18 +10,18 @@ import cv2 as cv
 
 # Constants
 VIDEO_SOURCE_NAME = 'ebu7240_hand.mp4'
-VIDEO_SOURCE_PATH = '../../inputs/' + VIDEO_SOURCE_NAME
+VIDEO_SOURCE_PATH = '../inputs/' + VIDEO_SOURCE_NAME
 RESULT_A_NAME = 'ex1_a_hand_rgbtest'
 RESULT_B_NAME = 'ex1_b_hand_composition'
-RESULT_PATH = '../../results/'
-MY_NAME_PATH = '../../inputs/my_name.png'
+RESULT_PATH = '../results/'
+MY_NAME_PATH = '../inputs/my_name.png'
 
 
 def generate_file_path(file_id, ex_name='A'):
     if ex_name == 'A':
-        return '../../results/' + 'ex1_a_hand_frames' + str(file_id) + '.png'
+        return '../results/' + 'ex1_a_hand_frames' + str(file_id) + '.png'
     else:
-        return '../../results/' + 'ex1_b_hand_frames' + str(file_id) + '.png'
+        return '../results/' + 'ex1_b_hand_frames' + str(file_id) + '.png'
 
 
 def generate_frame_from_video(video_source: cv.VideoCapture, frame_size=1):
