@@ -161,13 +161,6 @@ def main():
     generate_result(frame_71_to_90_res, '_frame_71_to_90')
     get_specific_frame(frame_71_to_90_res, 71, 90)
 
-    # exercise_1 b
-    # Task 1, 2
-    res = generate_video_with_img(resize_frame_list)
-    generate_result(res, ex_name='B')
-    for item in [1, 21, 31, 61, 90]:
-        get_specific_frame(res, 1, item, ex_name='B')
-
 
 if __name__ == '__main__':
     main()
